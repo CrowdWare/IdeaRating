@@ -2,6 +2,9 @@
 require 'vendor/autoload.php';
 require 'datastore.php'; 
 
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
 $what = $_REQUEST["what"];
 if($what == "votes")
 {

@@ -2,20 +2,32 @@
 require 'vendor/autoload.php';
 require 'datastore.php'; 
 
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+
 $idea = $_REQUEST["idea"];
 $email = $_REQUEST["email"];
 if($idea == "")
 {
-	echo 'No idea specified';
+	echo '{';
+	echo '"message": "No idea specified"';
+	echo '}';
 	die();
 }
 if($email == "")
 {
-	echo 'No email specified';
+	echo '{';
+	echo '"message": "No email specified"';
+	echo '}';
 	die();
 }
-echo 'voteforIdea("' . $idea . '","' . $email . '")';
 $ds = Datastore::getOrCreate();
 Datastore::voteForIdea($ds, $idea, $email);
-echo ';';
+echo '{';
+echo '"message": "Vote has been added."';
+echo '}';
 ?>

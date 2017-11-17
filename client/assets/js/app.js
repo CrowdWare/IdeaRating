@@ -1,8 +1,58 @@
 $(document).ready(function(){
  
-	$(document).on('click', '.create-idea-button', function(){
-		alert("create idea");
+	$(document).on('click', '.add-idea-button', function()
+	{
+		createIdea();
     });
+
+	$(document).on('click', '#add-idea-cancel', function()
+	{
+		showIdeas();
+    });
+
+	$(document).on('click', '.vote-idea-button', function()
+	{
+		$.post("https://idearating-186209.appspot.com/ideas/vote.php",
+		{
+			idea: $(this).attr('data-id'),
+			email: 'artanidos@gmail.com'
+		}
+		,
+    	function(data, status)
+		{
+			console.log(data);
+			console.log(status);
+			showIdeas();
+   	 	})
+		.fail(function(data, status) 
+		{	
+			console.log(data);
+			console.log(status);
+  		});
+		
+		return false;
+    });
+
+	
+	$(document).on('submit', '#add-idea-form', function()
+	{
+		$.post("https://idearating-186209.appspot.com/ideas/create_idea.php",
+		$("#add-idea-form").serialize()
+		,
+    	function(data, status)
+		{
+			console.log(data);
+			console.log(status);
+			showIdeas();
+   	 	})
+		.fail(function(data, status) 
+		{	
+			console.log(data);
+			console.log(status);
+  		});
+		
+		return false;
+	});
 
     // app html
     app_html="";
@@ -17,6 +67,8 @@ $(document).ready(function(){
  
     // inject to 'app' in index.html
     $("#app").html(app_html);
+
+	showIdeas();
 });
  
 // change page title
