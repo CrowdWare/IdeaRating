@@ -1,0 +1,18 @@
+runtime: php55
+api_version: 1
+
+handlers:
+- url: /ideas/ideas.php
+  script: ideas.php
+
+- url: /ideas/create_idea.php.*
+  script: create_idea.php
+
+- url: /ideas/vote.php.*
+  script: vote.php
+
+- url: /ideas/reset.php.*
+  script: reset.php
+
+- url: /.*
+  script: welcome.php
