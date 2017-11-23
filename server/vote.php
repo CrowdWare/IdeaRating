@@ -11,23 +11,36 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 $idea = $_REQUEST["idea"];
 $email = $_REQUEST["email"];
+$app = $_REQUEST["app"];
+if($app == "")
+{
+	echo '{';
+	echo 'success: false,';
+	echo 'message: "No app specified"';
+	echo '}';
+	die();
+}
 if($idea == "")
 {
 	echo '{';
-	echo '"message": "No idea specified"';
+	echo 'success: false,';
+	echo 'message: "No idea specified"';
 	echo '}';
 	die();
 }
 if($email == "")
 {
 	echo '{';
-	echo '"message": "No email specified"';
+	echo 'success: false,';
+	echo 'message: "No email specified"';
 	echo '}';
 	die();
 }
 $ds = Datastore::getOrCreate();
-Datastore::voteForIdea($ds, $idea, $email);
-echo '{';
-echo '"message": "Vote has been added."';
-echo '}';
+Datastore::voteForIdea($ds, $app, $idea, $email);
+echo json_encode(array('success' => true));
+//echo '{';
+//echo 'success: true,';
+//echo 'message: "Vote has been added."';
+//echo '}';
 ?>

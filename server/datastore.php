@@ -21,9 +21,9 @@ class Datastore
         return Datastore::$ds;
     }
 
-	public static function resetVotes($ds)
+	public static function resetVotes($ds, $app)
 	{
-		$query = $ds->gqlQuery('SELECT * FROM Vote');
+		$query = $ds->gqlQuery('SELECT * FROM Vote WHERE app = "' . $app . '"');
 		$result = $ds->runQuery($query);
 
 		foreach ($result as $entity) 
@@ -32,9 +32,9 @@ class Datastore
 		}	
 	}
 
-	public static function resetIdeas($ds)
+	public static function resetIdeas($ds, $app)
 	{
-		$query = $ds->gqlQuery('SELECT * FROM Idea');
+		$query = $ds->gqlQuery('SELECT * FROM Idea WHERE app = "' . $app . '"');
 		$result = $ds->runQuery($query);
 
 		foreach ($result as $entity) 
@@ -44,13 +44,14 @@ class Datastore
 	}
 
 
-	public static function addIdea($ds, $idea, $name, $description)
+	public static function addIdea($ds, $app, $idea, $name, $description)
 	{
 		$key = $ds->key('Idea', $idea);
 		$entity = $ds->entity(
 			$key, 
 			[
 				'id' => $idea,
+				'app' => $app,
 				'name' => $name, 
 				'description' => $description
 			],
@@ -59,13 +60,14 @@ class Datastore
 		$ds->insert($entity);
 	}
 
-	public static function voteForIdea($ds, $idea, $email)
+	public static function voteForIdea($ds, $app, $idea, $email)
 	{
 		$key = $ds->key('Vote', uniqid());
 		$entity = $ds->entity(
 			$key, 
 			[
-				'idea' => $idea, 
+				'idea' => $idea,
+				'app' => $app,
 				'email' => $email
 			]
 		);

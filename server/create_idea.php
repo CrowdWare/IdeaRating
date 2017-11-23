@@ -11,10 +11,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 $name = $_REQUEST["name"];
 $description = $_REQUEST["description"];
+$app = $_REQUEST["app"];
 if($name == "")
 {
 	echo '{';
-	echo '"message": "No name specified"';
+	echo 'success: false,';
+	echo 'message: "No name specified"';
 	echo '}';
 	die();
 }
@@ -22,15 +24,26 @@ if($name == "")
 if($description == "")
 {
 	echo '{';
-	echo '"message": "No description specified"';
+	echo 'success: false,';
+	echo 'message: "No description specified"';
+	echo '}';
+	die();
+}
+if($app == "")
+{
+	echo '{';
+	echo 'success: false,';
+	echo 'message: "No app specified"';
 	echo '}';
 	die();
 }
 
 $ds = Datastore::getOrCreate();
 $idea = uniqid();
-Datastore::addIdea($ds, $idea, $name, $description);
-echo '{';
-echo '"message": "Idea has been added."';
-echo '}';
+Datastore::addIdea($ds, $app, $idea, $name, $description);
+echo json_encode(array('success' => true));
+//echo '{';
+//echo 'success: true,';
+//echo 'message: "Idea has been added."';
+//echo '}';
 ?>

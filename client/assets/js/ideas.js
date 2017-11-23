@@ -3,8 +3,9 @@ function createIdea()
 	// 'create product' html form
 	create_product_html = "";
 	create_product_html+="<form id='add-idea-form' action='#' method='post' border='0'>";
+	create_product_html+= "<input type='hidden' name='app' value='FlatSiteBuilder'>";
     create_product_html+="<table class='table table-hover table-responsive table-bordered'>";
- 
+
 	// name field
     create_product_html+="<tr>";
     create_product_html+="<td>Name</td>";
@@ -43,7 +44,10 @@ function createIdea()
 
 function showIdeas()
 {
- 	$.getJSON("https://idearating-186209.appspot.com/ideas/ideas.php", function(data)
+	var server = "https://idearating-186209.appspot.com";
+	//var server = "http://localhost:8080";
+
+ 	$.getJSON(server + "/ideas/ideas.php?app=FlatSiteBuilder", function(data)
 	{
  		// html for listing products
 		read_products_html="";

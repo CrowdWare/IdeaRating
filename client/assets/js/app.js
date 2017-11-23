@@ -1,5 +1,8 @@
 $(document).ready(function(){
  
+	var server = "https://idearating-186209.appspot.com";
+	//var server = "http://localhost:8080";
+
 	$(document).on('click', '.add-idea-button', function()
 	{
 		createIdea();
@@ -12,8 +15,9 @@ $(document).ready(function(){
 
 	$(document).on('click', '.vote-idea-button', function()
 	{
-		$.post("https://idearating-186209.appspot.com/ideas/vote.php",
+		$.post(server + "/ideas/vote.php",
 		{
+			app: 'FlatSiteBuilder',
 			idea: $(this).attr('data-id'),
 			email: 'artanidos@gmail.com'
 		}
@@ -36,7 +40,7 @@ $(document).ready(function(){
 	
 	$(document).on('submit', '#add-idea-form', function()
 	{
-		$.post("https://idearating-186209.appspot.com/ideas/create_idea.php",
+		$.post(server + "/ideas/create_idea.php",
 		$("#add-idea-form").serialize()
 		,
     	function(data, status)

@@ -5,15 +5,26 @@ require 'datastore.php';
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 
+$app = $_REQUEST["app"];
+if($app == "")
+{
+	echo '{success:false,message:"App is not specified."}';
+	die();
+}
 $ds = Datastore::getOrCreate();
-$query = $ds->gqlQuery('SELECT * FROM Idea');
+$query = $ds->gqlQuery('SELECT * FROM Idea WHERE app = @1', [
+	'bindings' => [
+			$app
+    	]
+]);
 $result = $ds->runQuery($query);
 echo '{"idea":[';
 $i = 0;
 foreach ($result as $entity) 
 {
-	$subquery = $ds->gqlQuery('SELECT * FROM Vote WHERE idea = @1', [
+	$subquery = $ds->gqlQuery('SELECT * FROM Vote WHERE app = @1 and idea = @2', [
     	'bindings' => [
+			$app,
         	$entity['id']
     	]
 	]);
@@ -30,14 +41,6 @@ foreach ($result as $entity)
 	$i++;
 }
 echo ']}';
-
-/*
-{"idea":[
-{"id":"1","name":"First idea","description":"Bla bla bla"},
-{"id":"2","name":"Second idea","description":"Bla bla bla"},
-{"id":"3","name":"Third idea","description":"Bla bla bla"}
-]}
-*/
 ?>
 
 
